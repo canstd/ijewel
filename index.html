@@ -4,21 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Website</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+ <style>
+    #viewer-root {
+  width: 100%;
+  height: 100%;
+}
+#viewer-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display:flex;
+  overflow: hidden;
+  position:relative;
+}
+#assetManagerLoadingScreen {
+  background-color: red!important;
+}
+   </style>
   </head>
   <body>
- <iframe
-  frameborder="0" 
-  allowfullscreen 
-  mozallowfullscreen="true" 
-  webkitallowfullscreen="true" 
-  xr-spatial-tracking 
-  execution-while-out-of-viewport 
-  execution-while-not-rendered web-share
-  allow="autoplay; fullscreen; xr-spatial-tracking;" 
-  width="1280px" height="720px"
-  src="https://ijewel.design/embedded?slug=b34ff19"/>
+<div id="viewer-wrapper">
+  <div id="viewer-root"></div>
+</div>
+
+    <script>
+      const model = "https://pixotronicscontent.s3.ap-south-1.amazonaws.com/engagementring/scene+(58).glb";
+
+new ijewelViewer.Viewer(document.getElementById("viewer-root")
+  ,{modelUrl : model, logo: "https://pixotronicscontent.s3.ap-south-1.amazonaws.com/engagementring/01_RADIANT+X_5.5CT_RS65.jpg"} //project
+  ,{showCard:false, showLogo:false} // viewer options
+);
+
+
+window.addEventListener("webgi-viewer-ready", async (ev) => {
+  console.log("ready");
+  const viewer = ev.detail.viewer;
+  viewer.canvas.addEventListener('click', ()=> {
+    //viewer.getPluginByType('FullScreenPlugin').toggle()
+    //viewer.scene.activeCamera.controls.autoRotate = true
+  })
+   viewer.scene.addEventListener('addSceneObject', (e) => {
+      if(!e.object) return;
+      //viewer.scene.activeCamera.controls.autoRotate = true
+    });
+});
+
+    </script>
   </body>
 </html>
