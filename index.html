@@ -4,50 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
- <style>
-    #viewer-root {
-  width: 100%;
-  height: 100%;
-}
-#viewer-wrapper {
-  width: 100vw;
-  height: 100vh;
-  display:flex;
-  overflow: hidden;
-  position:relative;
-}
-#assetManagerLoadingScreen {
-  background-color: red!important;
-}
-   </style>
+    <title>iJewel 3D Viewer</title>
+    <script src="https://releases.ijewel3d.com/libs/mini-viewer/0.2.1-dev.42/bundle.iife.js"></script>
+    <style>
+      #viewer-root {
+        width: 100%;
+        height: 100%;
+      }
+      #viewer-wrapper {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        overflow: hidden;
+        position: relative;
+      }
+      #assetManagerLoadingScreen {
+        background-color: red !important;
+      }
+    </style>
   </head>
   <body>
-<div id="viewer-wrapper">
-  <div id="viewer-root"></div>
-</div>
-        <script>
-      const model = "https://pixotronicscontent.s3.ap-south-1.amazonaws.com/engagementring/scene+(58).glb";
+    <div id="viewer-wrapper">
+      <div id="viewer-root"></div>
+    </div>
 
-new ijewelViewer.Viewer(document.getElementById("viewer-root")
-  ,{modelUrl : model, logo: "https://pixotronicscontent.s3.ap-south-1.amazonaws.com/engagementring/01_RADIANT+X_5.5CT_RS65.jpg"} //project
-  ,{showCard:false, showLogo:false} // viewer options
-);
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const model =
+          "https://pixotronicscontent.s3.ap-south-1.amazonaws.com/engagementring/scene+(58).glb";
 
+        new ijewelViewer.Viewer(
+          document.getElementById("viewer-root"),
+          {
+            modelUrl: model,
+            logo: "https://pixotronicscontent.s3.ap-south-1.amazonaws.com/engagementring/01_RADIANT+X_5.5CT_RS65.jpg",
+          }, // project options
+          {
+            showCard: false,
+            showLogo: false,
+          } // viewer options
+        );
 
-window.addEventListener("webgi-viewer-ready", async (ev) => {
-  console.log("ready");
-  const viewer = ev.detail.viewer;
-  viewer.canvas.addEventListener('click', ()=> {
-    //viewer.getPluginByType('FullScreenPlugin').toggle()
-    //viewer.scene.activeCamera.controls.autoRotate = true
-  })
-   viewer.scene.addEventListener('addSceneObject', (e) => {
-      if(!e.object) return;
-      //viewer.scene.activeCamera.controls.autoRotate = true
-    });
-});
+        window.addEventListener("webgi-viewer-ready", async (ev) => {
+          console.log("Viewer is ready.");
+          const viewer = ev.detail.viewer;
 
+          viewer.canvas.addEventListener("click", () => {
+            // viewer.getPluginByType('FullScreenPlugin').toggle();
+            // viewer.scene.activeCamera.controls.autoRotate = true;
+          });
+
+          viewer.scene.addEventListener("addSceneObject", (e) => {
+            if (!e.object) return;
+            // viewer.scene.activeCamera.controls.autoRotate = true;
+          });
+        });
+      });
     </script>
-
   </body>
 </html>
