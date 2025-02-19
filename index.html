@@ -6,29 +6,6 @@
   <title>3D Model Configurator</title>
   <style>
     <body>
-    <script>
-            const model = "/main-website/engagementring-configurator.glb";
-
-            const basePath = "https://assets.demodrive.ijewel3d.com";
-
-            ijewelViewer.initializeIJewel3DViewer({
-              basePath: basePath,
-              model: model,
-              ijewelViewerOptions: {
-                showCard: true,
-                splitMaterialTabs: false,
-                showSwitchNode: true,
-                showLogo: false,
-                enableZoom: true,
-                showZoomButtons: true,
-                enableScrollWheel: false
-              }
-            }, document.getElementById("config-root"));
-
-            window.addEventListener("webgi-viewer-ready", async (ev) => {
-              const viewer = ev.detail.viewer;
-            });
-          
-</script>
+   
 </body>
 </html>
