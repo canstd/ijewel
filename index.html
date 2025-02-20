@@ -55,11 +55,13 @@
     <button id="toggle-gem">Gem 01 Aç/Kapat</button>
 
     <script>
+        let viewer; // Global olarak `viewer` değişkenini tanımlıyoruz
+
         document.addEventListener("DOMContentLoaded", function () {
             const model = "scene.glb";
 
             // iJewel Viewer başlatılıyor
-            new ijewelViewer.Viewer(
+            viewer = new ijewelViewer.Viewer(
                 document.getElementById("viewer-root"),
                 {
                     modelUrl: model,
@@ -74,7 +76,7 @@
             // Viewer tamamen yüklendiğinde tetiklenecek kodlar
             window.addEventListener("webgi-viewer-ready", async (ev) => {
                 console.log("Viewer is ready.");
-                const viewer = ev.detail.viewer;
+                viewer = ev.detail.viewer; // Viewer nesnesini global değişkene atıyoruz
                 
                 // Gem Aç/Kapat Butonu
                 const toggleGemButton = document.getElementById("toggle-gem");
@@ -115,3 +117,4 @@
 
 </body>
 </html>
+
