@@ -1,75 +1,114 @@
 <!DOCTYPE html>
 <html lang="tr">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>iJewel 3D Viewer</title>
+    
+    <!-- iJewel 3D Viewer SDK -->
     <script src="https://releases.ijewel3d.com/libs/mini-viewer/0.2.1-dev.42/bundle.iife.js"></script>
+
     <style>
-      #viewer-root {
-        width: 100%;
-        height: 100%;
-      }
-      #viewer-wrapper {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        overflow: hidden;
-        position: relative;
-      }
-      #assetManagerLoadingScreen {
-        background-color: red !important;
-      }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #viewer-wrapper {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+        #viewer-root {
+            width: 100%;
+            height: 100%;
+        }
+        /* Gem Aç/Kapat Butonu */
+        #toggle-gem {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+        #toggle-gem:hover {
+            background-color: #0056b3;
+        }
     </style>
-  </head>
-  <body>
-   <div>
-  <div style="
-  width: 400px;       /* Kare genişliği */
-  height: 400px;      /* Kare yüksekliği */
-  border: 3px solid blue; 
-  overflow: hidden;   /* Taşan kısmı gizle */
-  position: relative; /* Mutlak konumlandırma için relative */
-  margin: 20px auto;  /* Ortalamak isterseniz (yatay) */
-">
-  </div>
+</head>
+<body>
+    
+    <!-- 3D Viewer Alanı -->
     <div id="viewer-wrapper">
-      <div id="viewer-root"></div>
+        <div id="viewer-root"></div>
     </div>
-   </div>
+
+    <!-- Gem Aç/Kapat Butonu -->
+    <button id="toggle-gem">Gem 01 Aç/Kapat</button>
+
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const model =
-          "scene.glb";
+        document.addEventListener("DOMContentLoaded", function () {
+            // GLB model dosyası
+            const model = "scene.glb";
 
-        new ijewelViewer.Viewer(
-          document.getElementById("viewer-root"),
-          {
-            modelUrl: model,
-            logo: "",
-          }, // project options
-          {
-            showCard: false,
-            showLogo: false,
-          } // viewer options
-        );
+            // iJewel Viewer başlatılıyor
+            new ijewelViewer.Viewer(
+                document.getElementById("viewer-root"),
+                {
+                    modelUrl: model,
+                    logo: "",
+                }, // project options
+                {
+                    showCard: false,
+                    showLogo: false,
+                } // viewer options
+            );
 
-        window.addEventListener("webgi-viewer-ready", async (ev) => {
-          console.log("Viewer is ready.");
-          const viewer = ev.detail.viewer;
+            // iJewel Viewer tamamen yüklendiğinde çalışacak kodlar
+            window.addEventListener("webgi-viewer-ready", async (ev) => {
+                console.log("Viewer is ready.");
+                const viewer = ev.detail.viewer;
+                
+                // Gem Aç/Kapat Butonu
+                const toggleGemButton = document.getElementById("toggle-gem");
 
-          viewer.canvas.addEventListener("click", () => {
-            // viewer.getPluginByType('FullScreenPlugin').toggle();
-            // viewer.scene.activeCamera.controls.autoRotate = true;
-          });
+                // Gem 01 malzemesinin başlangıçta görünür olduğunu varsayalım
+                let gemVisible = true;
 
-          viewer.scene.addEventListener("addSceneObject", (e) => {
-            if (!e.object) return;
-            // viewer.scene.activeCamera.controls.autoRotate = true;
-          });
+                toggleGemButton.addEventListener("click", () => {
+                    // Sahnedeki tüm malzemeleri al
+                    const materials = viewer.scene.materials;
+
+                    // "Gem 01" adlı malzeme var mı?
+                    const gemMaterial = materials.find(mat => mat.name === "Gem 01");
+
+                    if (gemMaterial) {
+                        if (gemVisible) {
+                            // Gem 01 malzemesini kaldır
+                            gemMaterial.visible = false;
+                            console.log("Gem 01 kaldırıldı.");
+                        } else {
+                            // Gem 01 malzemesini tekrar ekle
+                            gemMaterial.visible = true;
+                            console.log("Gem 01 geri yüklendi.");
+                        }
+                        // Durumu tersine çevir
+                        gemVisible = !gemVisible;
+                    } else {
+                        console.warn("Gem 01 malzemesi bulunamadı!");
+                    }
+                });
+            });
         });
-      });
     </script>
-  </body>
+
+</body>
 </html>
