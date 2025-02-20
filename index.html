@@ -56,7 +56,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // GLB model dosyası
             const model = "scene.glb";
 
             // iJewel Viewer başlatılıyor
@@ -72,7 +71,7 @@
                 } // viewer options
             );
 
-            // iJewel Viewer tamamen yüklendiğinde çalışacak kodlar
+            // Viewer tamamen yüklendiğinde tetiklenecek kodlar
             window.addEventListener("webgi-viewer-ready", async (ev) => {
                 console.log("Viewer is ready.");
                 const viewer = ev.detail.viewer;
@@ -80,32 +79,36 @@
                 // Gem Aç/Kapat Butonu
                 const toggleGemButton = document.getElementById("toggle-gem");
 
-                // Gem 01 malzemesinin başlangıçta görünür olduğunu varsayalım
+                // Gem 01'in başlangıçta görünür olduğunu varsayalım
                 let gemVisible = true;
 
                 toggleGemButton.addEventListener("click", () => {
-                    // Sahnedeki tüm malzemeleri al
-                    const materials = viewer.scene.materials;
+                    // Sahnedeki tüm objeleri al
+                    const objects = viewer.scene.children;
 
-                    // "Gem 01" adlı malzeme var mı?
-                    const gemMaterial = materials.find(mat => mat.name === "Gem 01");
+                    // "Gem 01" objesini bul
+                    const gemObject = objects.find(obj => obj.name.includes("Gem 01"));
 
-                    if (gemMaterial) {
+                    if (gemObject) {
                         if (gemVisible) {
-                            // Gem 01 malzemesini kaldır
-                            gemMaterial.visible = false;
+                            // Gem 01 objesini gizle
+                            gemObject.visible = false;
                             console.log("Gem 01 kaldırıldı.");
                         } else {
-                            // Gem 01 malzemesini tekrar ekle
-                            gemMaterial.visible = true;
+                            // Gem 01 objesini tekrar göster
+                            gemObject.visible = true;
                             console.log("Gem 01 geri yüklendi.");
                         }
                         // Durumu tersine çevir
                         gemVisible = !gemVisible;
                     } else {
-                        console.warn("Gem 01 malzemesi bulunamadı!");
+                        console.warn("Gem 01 bulunamadı!");
                     }
                 });
+
+                // ** Konsolda "Gem 01" var mı kontrol etmek için ek test kodu **
+                console.log("Sahnedeki objeler:");
+                viewer.scene.children.forEach(obj => console.log(obj.name));
             });
         });
     </script>
