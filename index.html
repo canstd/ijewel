@@ -8,7 +8,7 @@
     
     <!-- iJewel 3D Viewer SDK -->
     <script src="https://releases.ijewel3d.com/libs/mini-viewer/0.2.1-dev.42/bundle.iife.js"></script>
-<script> viewer.scene.getObjectByName("object_name", (obj) => { obj.visible = false; }); </script>
+
     <style>
         body {
             margin: 0;
@@ -45,6 +45,7 @@
     </style>
 </head>
 <body>
+    
     <!-- 3D Viewer Alanı -->
     <div id="viewer-wrapper">
         <div id="viewer-root"></div>
@@ -54,7 +55,7 @@
     <button id="toggle-gem">Gem 01 Aç/Kapat</button>
 
     <script>
-        let viewer; // Global olarak `viewer` değişkenini tanımlıyoruz
+        let viewer; // Viewer değişkenini global olarak tanımlıyoruz
 
         document.addEventListener("DOMContentLoaded", function () {
             const model = "scene.glb";
@@ -72,48 +73,33 @@
                 } // viewer options
             );
 
-            // Viewer tamamen yüklendiğinde tetiklenecek kodlar
+            // WebGi yüklenince çalışacak kod
             window.addEventListener("webgi-viewer-ready", async (ev) => {
-                console.log("Viewer is ready.");
-                viewer = ev.detail.viewer; // Viewer nesnesini global değişkene atıyoruz
+                console.log("✅ Viewer Yüklendi!");
+                viewer = ev.detail.viewer; // Viewer nesnesini burada oluşturuyoruz
                 
                 // Gem Aç/Kapat Butonu
                 const toggleGemButton = document.getElementById("toggle-gem");
-
-                // Gem 01'in başlangıçta görünür olduğunu varsayalım
                 let gemVisible = true;
 
                 toggleGemButton.addEventListener("click", () => {
-                    // Sahnedeki tüm objeleri al
-                    const objects = viewer.scene.children;
-
-                    // "Gem 01" objesini bul
-                    const gemObject = objects.find(obj => obj.name.includes("Gem 01"));
-
-                    if (gemObject) {
-                        if (gemVisible) {
-                            // Gem 01 objesini gizle
-                            gemObject.visible = false;
-                            console.log("Gem 01 kaldırıldı.");
+                    viewer.scene.getObjectByName("Gem 01", (obj) => {  
+                        if (obj) {  
+                            obj.visible = gemVisible ? false : true;  
+                            console.log(`💎 Gem 01 durumu değiştirildi: ${obj.visible}`);
+                            gemVisible = !gemVisible;
                         } else {
-                            // Gem 01 objesini tekrar göster
-                            gemObject.visible = true;
-                            console.log("Gem 01 geri yüklendi.");
+                            console.warn("❌ Gem 01 bulunamadı!");
                         }
-                        // Durumu tersine çevir
-                        gemVisible = !gemVisible;
-                    } else {
-                        console.warn("Gem 01 bulunamadı!");
-                    }
+                    });
                 });
 
                 // ** Konsolda "Gem 01" var mı kontrol etmek için ek test kodu **
-                console.log("Sahnedeki objeler:");
-                viewer.scene.children.forEach(obj => console.log(obj.name));
+                console.log("Sahnedeki objeler yükleniyor...");
+                viewer.scene.traverse(obj => console.log(obj.name));
             });
         });
     </script>
 
 </body>
 </html>
-
