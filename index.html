@@ -8,7 +8,7 @@
     
     <!-- iJewel 3D Viewer SDK -->
     <script src="https://releases.ijewel3d.com/libs/mini-viewer/0.2.1-dev.42/bundle.iife.js"></script>
-
+<script> viewer.scene.getObjectByName("object_name", (obj) => { obj.visible = false; }); </script>
     <style>
         body {
             margin: 0;
@@ -70,7 +70,6 @@
                     showCard: false,
                     showLogo: false,
                 } // viewer options
-                 viewer.scene.getObjectByName("object_name", (obj) => { obj.visible = false; });
             );
 
             // Viewer tamamen yüklendiğinde tetiklenecek kodlar
