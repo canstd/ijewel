@@ -45,7 +45,6 @@
     </style>
 </head>
 <body>
-    <div  viewer.scene.getObjectByName("object_name", (obj) => { obj.visible = false; });>
     <!-- 3D Viewer Alanı -->
     <div id="viewer-wrapper">
         <div id="viewer-root"></div>
@@ -71,6 +70,7 @@
                     showCard: false,
                     showLogo: false,
                 } // viewer options
+                 viewer.scene.getObjectByName("object_name", (obj) => { obj.visible = false; });
             );
 
             // Viewer tamamen yüklendiğinde tetiklenecek kodlar
